@@ -48,8 +48,7 @@ func ImageAPICall(url string, base64imagehash string) *http.Response {
 		fmt.Println(err)
 	}
 
-	access_token := config.access_token
-	request.Header.Add("Authorization", fmt.Sprintf("Bearer %s", access_token))
+	request.Header.Add("Authorization", fmt.Sprintf("Bearer %s", config.access_token))
 
 	request.Header.Set("Content-Type", writer.FormDataContentType())
 	response, err := client.Do(request)
