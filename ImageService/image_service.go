@@ -54,7 +54,7 @@ func StartServer() {
 
 	config.access_token = os.Getenv("ACCESS_TOKEN")
 
-	fmt.Println("Starting server")
+	fmt.Println("Starting server...")
 	log.Fatal(http.ListenAndServe(":8000", router))
 }
 
