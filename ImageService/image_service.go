@@ -129,7 +129,7 @@ func asyncUploadImages(jobID string, urls URLRequest) {
 	for _, url := range urls.URLs {
 		uploadStatusResponse.Status = "in-progress"
 		base64EncodedString := imageToBase64(url)
-		response := ImageUpload(base64EncodedString)
+		response := ImageAPICall(POST_URL, base64EncodedString)
 		if response.StatusCode == 200 {
 			defer response.Body.Close()
 			body, _ := ioutil.ReadAll(response.Body)
@@ -161,7 +161,7 @@ func getImagesUploadStatus(responseWriter http.ResponseWriter, request *http.Req
 }
 
 func getImages(responseWriter http.ResponseWriter, request *http.Request) {
-	accountImagesResponse := GetAccountImages()
+	accountImagesResponse := ImageAPICall(GET_URL, "")
 	defer accountImagesResponse.Body.Close()
 	body, _ := ioutil.ReadAll(accountImagesResponse.Body)
 	imageURLs := gjson.Get(string(body), "data.#.link")
