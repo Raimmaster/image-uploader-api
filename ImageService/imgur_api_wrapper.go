@@ -14,14 +14,25 @@ type Configuration struct {
 
 var config Configuration
 
-func ImageUpload(base64imagehash string) *http.Response {
-	url := "https://api.imgur.com/3/image"
-	method := "POST"
+var POST_URL = "https://api.imgur.com/3/image"
+var GET_URL = "https://api.imgur.com/3/account/me/images"
 
+func ImageAPICall(url string, base64imagehash string) *http.Response {
+	method := "GET"
 	payload := &bytes.Buffer{}
 	writer := multipart.NewWriter(payload)
-	_ = writer.WriteField("image", base64imagehash)
+
+	if url == POST_URL {
+		method = "POST"
+		err := writer.WriteField("image", base64imagehash)
+
+		if err != nil {
+			fmt.Println(err)
+		}
+	}
+
 	err := writer.Close()
+		
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -48,35 +59,4 @@ func ImageUpload(base64imagehash string) *http.Response {
 	}
 
 	return response
-}
-
-func GetAccountImages() *http.Response {
-	url := "https://api.imgur.com/3/account/me/images"
-	method := "GET"
-
-	payload := &bytes.Buffer{}
-	writer := multipart.NewWriter(payload)
-	err := writer.Close()
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	client := &http.Client{
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			return http.ErrUseLastResponse
-		},
-	}
-	req, err := http.NewRequest(method, url, payload)
-
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	access_token := config.access_token
-	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", access_token))
-
-	req.Header.Set("Content-Type", writer.FormDataContentType())
-	res, err := client.Do(req)
-
-	return res
 }
