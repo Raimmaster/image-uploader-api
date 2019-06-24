@@ -1,12 +1,12 @@
 # Image Uploader API
 
-This is a small API that uploads images to Imgur. The functions of `ImageUpload` and `GetAccountImages` are provided by Imgur in their [API docs](https://apidocs.imgur.com/).
+This is a small API that uploads images to Imgur. The function of `ImageAPICall` is adapted by the Go functions provided by Imgur in their [API docs](https://apidocs.imgur.com/).
 
 This service is dockerized, so in order to run it, you'll need an access token. In order to generate one, you can look into [Authorization and OAuth](https://apidocs.imgur.com/#authorization-and-oauth) in Imgur's API docs. Once you have the token, you can set it up as an environment variable and utilize it as an argument while running the container.
 
 You can run the container in the following manner:
 ```Go
-export ACCES_TOKEN=token
+export ACCESS_TOKEN=token
 docker build --build-arg ACCESS_TOKEN=$ACCESS_TOKEN -t image-service:0.0.1 .
 docker run -p 8000:8000 image-service:0.0.1 
 ```
